@@ -1,12 +1,3 @@
-import { After,Before,Status } from "@cucumber/cucumber";
-import { chromium } from "@playwright/test";
-import { CustomWorld } from "./world";
-Before(async function(this:CustomWorld){
-  this.browser=await chromium.launch({headless:process.env.HEADLESS!=="false"});
-  this.context=await this.browser.newContext({viewport:{width:1440,height:900}});
-  this.page=await this.context.newPage(); this.initializePages();
-});
-After(async function(this:CustomWorld,s){
-  if(s.result?.status===Status.FAILED&&this.page){await this.attach(await this.page.screenshot({fullPage:true}),"image/png");}
-  await this.context?.close(); await this.browser?.close();
-});
+import { After,Before,Status } from "@cucumber/cucumber";import { chromium } from "@playwright/test";import { CustomWorld } from "./world";
+Before(async function(this:CustomWorld){this.browser=await chromium.launch({headless:process.env.HEADLESS!=="false"});this.context=await this.browser.newContext({viewport:{width:1440,height:900}});this.page=await this.context.newPage();this.initializePages();});
+After(async function(this:CustomWorld,s){if(s.result?.status===Status.FAILED&&this.page)await this.attach(await this.page.screenshot({fullPage:true}),"image/png");await this.context?.close();await this.browser?.close();});

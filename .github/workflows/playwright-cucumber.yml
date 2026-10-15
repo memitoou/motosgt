@@ -8,7 +8,6 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
     env:
       BASE_URL: https://cam-motos-ui-ams.stage.walmart.com/
       HEADLESS: "true"
@@ -29,4 +28,3 @@ jobs:
         with:
           name: cam-motos-test-reports
           path: reports/
-          if-no-files-found: warn
