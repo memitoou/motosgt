@@ -1,0 +1,32 @@
+name: CAM Motos - Playwright Cucumber
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      BASE_URL: https://cam-motos-ui-ams.stage.walmart.com/
+      HEADLESS: "true"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+      - if: always()
+        run: npm run report
+        continue-on-error: true
+      - if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: cam-motos-test-reports
+          path: reports/
+          if-no-files-found: warn
